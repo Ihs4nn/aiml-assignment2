@@ -20,6 +20,9 @@ for col in ['Age', 'Job', 'Credit amount', 'Duration']:
 for col in dataset.select_dtypes(include=['object']).columns:
     dataset[col] = dataset[col].astype('category').cat.codes
 
+# Removes 'Unnamed' column
+dataset = dataset.loc[:, ~dataset.columns.str.contains('^Unnamed')]
+
 # Saves the cleaned dataset to a new CSV file for ML training
 dataset.to_csv("cleaned_data.csv", index=False)
 print("Cleaned data saved to cleaned_data.csv")
