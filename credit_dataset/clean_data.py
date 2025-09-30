@@ -1,6 +1,16 @@
 import pandas as pd
+import random
 
+# Load dataset
 dataset = pd.read_csv("raw_data/original_data.csv")
+
+# Add 'Credit score' and 'Income' columns if not present
+if 'Credit score' not in dataset.columns:
+    # Random credit score between 300 and 850 (typical range)
+    dataset['Credit score'] = [random.randint(300, 850) for _ in range(len(dataset))]
+if 'Income' not in dataset.columns:
+    # Random income between 10,000 and 100,000
+    dataset['Income'] = [random.randint(10000, 100000) for _ in range(len(dataset))]
 
 # Goes through the dataset and replaces 'NA' values with -1
 dataset.replace('NA', pd.NA, inplace=True)
@@ -12,7 +22,7 @@ if 'Risk' in dataset.columns:
     dataset['Risk'] = dataset['Risk'].fillna(-1)
 
 # With numerical columns keep them the same but if there is a non-numeric value then replace with -1
-for col in ['Age', 'Job', 'Credit amount', 'Duration']:
+for col in ['Age', 'Job', 'Credit amount', 'Duration', 'Credit score', 'Income']:
     if col in dataset.columns:
         dataset[col] = pd.to_numeric(dataset[col], errors='coerce').fillna(-1)
 
