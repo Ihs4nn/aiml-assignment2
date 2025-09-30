@@ -2,10 +2,11 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
+# from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, average_precision_score
+from sklearn.metrics import classification_report, roc_auc_score, average_precision_score
 from sklearn.utils.class_weight import compute_class_weight
+import joblib
 
 # Load the cleaned dataset for training
 df = pd.read_csv("../credit_dataset/cleaned_data.csv")
@@ -53,3 +54,13 @@ print(classification_report(y_test, y_pred_rf))
 print("ROC-AUC:", roc_auc_score(y_test, rf.predict_proba(X_test)[:, 1]))
 print("PR_AUC:", average_precision_score(y_test, rf.predict_proba(X_test)[:, 1]))
 print("\n")
+
+joblib.dump(rf, "ml_credit_risk_model.pkl")
+
+def predict_credit_risk(applicant_features):
+    # Load the ML model
+    ml_model = joblib.load("ml_credit_risk_model.pkl")
+    # Make a prediction based on the persons features
+    prediction = ml_model.predict([applicant_features])
+    # Return the predicition
+    return int(prediction[0])
