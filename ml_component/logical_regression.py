@@ -8,7 +8,11 @@ from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
 # Load the cleaned dataset for training
-df = pd.read_csv("../credit_dataset/cleaned_data.csv")
+try:
+    df = pd.read_csv("../credit_dataset/cleaned_data.csv")
+except FileNotFoundError:
+    print("Error: 'cleaned_data.csv' not found.")
+    exit()
 
 # Define features and target
 feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts',
@@ -42,12 +46,12 @@ print("ROC-AUC:", roc_auc_score(y_test, lr.predict_proba(X_test_scaled)[:, 1]))
 print("PR_AUC:", average_precision_score(y_test, lr.predict_proba(X_test_scaled)[:, 1]))
 print("\n")
 
-joblib.dump(lr, "logistic_regression_model.pkl")
+# joblib.dump(lr, "logistic_regression_model.pkl")
 
-def predict_credit_risk(applicant_features):
-    # Load the ML model
-    ml_model = joblib.load("logistic_regression_model.pkl")
-    # Make a prediction based on the persons features
-    prediction = ml_model.predict([applicant_features])
-    # Return the predicition
-    return int(prediction[0])
+# def predict_credit_risk(applicant_features):
+#     # Load the ML model
+#     ml_model = joblib.load("logistic_regression_model.pkl")
+#     # Make a prediction based on the persons features
+#     prediction = ml_model.predict([applicant_features])
+#     # Return the predicition
+#     return int(prediction[0])
