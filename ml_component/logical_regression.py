@@ -17,6 +17,7 @@ except FileNotFoundError:
 # Define features and target
 feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts',
                'Checking account', 'Credit amount', 'Duration', 'Purpose', 'Credit score', 'Income']
+
 X = df[feature_cols]
 # Seperate target variable (what we want to predict)
 y = df['Risk']

@@ -45,7 +45,7 @@ print("ROC-AUC:", roc_auc_score(y_test, rf.predict_proba(X_test)[:, 1]))
 print("PR_AUC:", average_precision_score(y_test, rf.predict_proba(X_test)[:, 1]))
 print("\n")
 
-joblib.dump(rf, "random_forest_model.pkl")
+# joblib.dump(rf, "random_forest_model.pkl")
 
 # def predict_credit_risk(applicant_features):
 #     # Load the ML model

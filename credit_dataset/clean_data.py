@@ -2,15 +2,19 @@ import pandas as pd
 import random
 
 # Load dataset
-dataset = pd.read_csv("raw_data/original_data.csv")
+try:
+    dataset = pd.read_csv("raw_data/balanced_data.csv")
+except FileNotFoundError:
+    print("Error: 'balanced_data.csv' not found.")
+    exit()
 
-# Add 'Credit score' and 'Income' columns if not present
-if 'Credit score' not in dataset.columns:
-    # Random credit score between 300 and 850 (typical range)
-    dataset['Credit score'] = [random.randint(300, 850) for _ in range(len(dataset))]
-if 'Income' not in dataset.columns:
-    # Random income between 10,000 and 100,000
-    dataset['Income'] = [random.randint(10000, 100000) for _ in range(len(dataset))]
+# # Add 'Credit score' and 'Income' columns if not present
+# if 'Credit score' not in dataset.columns:
+#     # Random credit score between 300 and 850 (typical range)
+#     dataset['Credit score'] = [random.randint(300, 850) for _ in range(len(dataset))]
+# if 'Income' not in dataset.columns:
+#     # Random income between 10,000 and 100,000
+#     dataset['Income'] = [random.randint(10000, 100000) for _ in range(len(dataset))]
 
 # Goes through the dataset and replaces 'NA' values with -1
 dataset.replace('NA', pd.NA, inplace=True)
