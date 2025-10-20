@@ -38,6 +38,7 @@ cw_dict = {cls: weight for cls, weight in zip(y_classes, class_weights)}
 X_train_scaled = X_train
 X_test_scaled = X_test
 
+print("\n")
 rf = RandomForestClassifier(class_weight=cw_dict, n_estimators=100)
 rf.fit(X_train, y_train)
 y_pred_rf = rf.predict(X_test)
