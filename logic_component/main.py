@@ -1,15 +1,16 @@
+from statistics import mode
 
 # customer_data in format:
 # {
 #   id,
 #   age,
 #   sex,
-#   job,
+#   num_of_jobs,
 #   housing,
 #   savings accounts,
 #   checking account,
 #   credit amount,
-#   duration,
+#   loan_duration,
 #   purpose,
 #   credit score,
 #   income,
@@ -20,23 +21,29 @@ example_customer_data = {
     "id": 1,
     "age": 30,
     "sex": 1, # 1 = male, 0 = female
-    "job": 1,
+    "num_of_jobs": 1,
     "housing": 1, # 0 = free, 1 = own, 2 = rent
     "savings_accounts": 3, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
     "checking_account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
     "credit_amount": 2000,
-    "duration": 6, # in months
+    "loan_duration": 6, # in months
     "purpose": 1, # 0 = business, 1 = car, 2 = domestic appliances, 3 = education,
                   # 4 = furniture/equipment, 5 = radio/TV, 6 = repairs, 7 = vacation/others
     "credit_score": 701,
     "income": 50000,
-    "risk": 0 # 0 = good, 1 = bad - TODO : how will this be given, as a score?
 }
 
 
 def reject(reason, applicant_id=None):
     """
     Rejects the loan application, prints the reason and returns a rejection message.
+
+    Parameters:
+        reason (str): Reason for application being rejected
+        applicant_id (int): Applicant's ID
+
+    Returns:
+        result (dict): Dictionary with the rejected status, reason and applicant's ID
     """
 
     # For audit purposes, log the reason for rejection
@@ -53,6 +60,13 @@ def reject(reason, applicant_id=None):
 def flag(reason, applicant_id=None):
     """
     Flags the loan application for manual review, prints the reason and returns a flag message.
+
+    Parameters:
+        reason (str): Reason for application being flagged for review
+        applicant_id (int): Applicant's ID
+
+    Returns:
+        result (dict): Dictionary with the flagged for review status, reason and applicant's ID
     """
 
     # For audit purposes, log the reason for flagging for review
@@ -69,6 +83,13 @@ def flag(reason, applicant_id=None):
 def approve(reason, applicant_id=None):
     """
     Approves the loan application, prints the reason and returns an approval message.
+
+    Parameters:
+        reason (str): Reason for application being approved
+        applicant_id (int): Applicant's ID
+        
+    Returns:
+        result (dict): Dictionary with the approved status, reason and applicant's ID
     """
 
     # For audit purposes, log the reason for approval
@@ -82,24 +103,31 @@ def approve(reason, applicant_id=None):
     }
 
 
-def process(customer_data, ml_risk_score):
+def process(customer_data, ml_risk_scores):
     """
-    Makes a decision on a customer's loan application using their data and ML risk score.
+    Makes a decision on a customer's loan application using their data and 3 ML risk scores.
+
+    Parameters:
+        customer_data (dict): Dictionary of customer data
+        ml_risk_scores (list): List of the 3 ML models' scores (0 being good risk, 1 being bad risk)
+
+    Returns:
+        result (dict): Dictionary with the status, reason and applicant's ID
     """
     
     id = customer_data["id"]
     age = customer_data["age"]
     sex = customer_data["sex"]
-    num_jobs = customer_data["job"]
+    num_jobs = customer_data["num_of_jobs"]
     housing_status = customer_data["housing"]
     savings_accounts = customer_data["savings_accounts"]
     checking_account = customer_data["checking_account"]
     credit_amount = customer_data["credit_amount"]
-    loan_duration = customer_data["duration"]
+    loan_duration = customer_data["loan_duration"]
     purpose = customer_data["purpose"]
     credit_score = customer_data["credit_score"]
     income = customer_data["income"]
-    risk = customer_data["risk"]
+    risk = mode(ml_risk_scores) # 0 = good risk, 1 = bad risk
 
     # strict rules
     if age < 18:
