@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import classification_report, roc_auc_score, average_precision_score
+from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
@@ -14,12 +14,16 @@ except FileNotFoundError:
     print("Error: 'cleaned_data.csv' not found.")
     exit()
 
-# Define features and target
 feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts',
                'Checking account', 'Credit amount', 'Duration', 'Purpose', 'Credit score', 'Income']
-X = df[feature_cols]
-# Seperate target variable (what we want to predict)
+X = df[feature_cols].copy()
 y = df['Risk']
+
+# Label encode categorical features
+categorical_cols = ['Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose']
+for col in categorical_cols:
+    le = LabelEncoder()
+    X[col] = le.fit_transform(X[col].astype(str))
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
@@ -29,21 +33,17 @@ y_classes = np.unique(y_train)
 class_weights = compute_class_weight(class_weight='balanced', classes=y_classes, y=y_train)
 cw_dict = {cls: weight for cls, weight in zip(y_classes, class_weights)}
 
-# Feature scaling
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+X_train_scaled = X_train
+X_test_scaled = X_test
 
 print("\n")
-# Training Decision Tree model
-dt = DecisionTreeClassifier(class_weight=cw_dict)
+dt = DecisionTreeClassifier(class_weight=cw_dict, max_depth=5)
 dt.fit(X_train_scaled, y_train)
 y_pred_dt = dt.predict(X_test_scaled)
-# Printing Decision Tree Model results
 print("Decision Tree Results:")
-print(classification_report(y_test, y_pred_dt))
+print("Accuracy:", accuracy_score(y_test, y_pred_dt))
 print("ROC-AUC:", roc_auc_score(y_test, dt.predict_proba(X_test_scaled)[:, 1]))
-print("PR_AUC:", average_precision_score(y_test, dt.predict_proba(X_test_scaled)[:, 1]))
+print("Tree Depth:", dt.get_depth())
 print("\n")
 
 # joblib.dump(dt, "decision_tree_model.pkl")
