@@ -132,8 +132,10 @@ def process(customer_data, ml_risk_scores):
     # strict rules
     if age < 18:
         return reject("Applicant must be at least 18 years old.")
-    elif credit_score < 600 and income < 20000:
-        return reject("Credit score and income below minimum thresholds.")
+    elif credit_score < 600:
+        return reject("Credit score below minimum thresholds.")
+    elif income < 20000:
+        return reject("Income below minimum thresholds.")
     elif credit_amount > income * 5:
         return reject("Requested credit exceeds safe borrowing limit.")
     # scenarios that would need reviewing

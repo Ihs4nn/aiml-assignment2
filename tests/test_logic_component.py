@@ -148,15 +148,24 @@ class TestProcess:
         assert "at least 18 years old" in result["reason"], "reason does not include expected value: 'at least 18 years old'"
 
 
-    def test_process_reject_low_credit_and_income(self, base_customer, good_ml_risk_scores):
-        # lowering credit score and income
+    def test_process_reject_low_credit(self, base_customer, good_ml_risk_scores):
+        # lowering credit score
         base_customer["credit_score"] = 500
+
+        result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
+
+        assert result["status"] == self.rejected, "status does not match expected value: 'Rejected'"
+        assert "Credit score below minimum" in result["reason"], "reason does not match expected value: 'Credit score below minimum'"
+    
+    
+    def test_process_reject_low_income(self, base_customer, good_ml_risk_scores):
+        # lowering income
         base_customer["income"] = 15000
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
         assert result["status"] == self.rejected, "status does not match expected value: 'Rejected'"
-        assert "Credit score and income below minimum" in result["reason"], "reason does not match expected value: 'Credit score and income below minimum'"
+        assert "Income below minimum" in result["reason"], "reason does not match expected value: 'Income below minimum'"
 
 
     def test_process_reject_credit_amount_too_high(self, base_customer, good_ml_risk_scores):
