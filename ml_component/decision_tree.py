@@ -22,6 +22,10 @@ def load_and_preprocess():
     except FileNotFoundError:
         print("Error: 'cleaned_data.csv' not found.")
         exit()
+    except pd.errors.EmptyDataError:
+        raise ValueError("The provided CSV file is empty.")
+    if df['Risk'].nunique() < 2:
+        raise ValueError("The target variable 'Risk' must contain at least two unique classes for training.")
 
     feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts',
                    'Checking account', 'Credit amount', 'Duration', 'Purpose', 'Credit score', 'Income']

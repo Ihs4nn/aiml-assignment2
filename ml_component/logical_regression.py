@@ -14,6 +14,10 @@ def load_and_preprocess():
     except FileNotFoundError:
         print("Error: 'cleaned_data.csv' not found.")
         exit()
+    except pd.errors.EmptyDataError:
+        raise ValueError("The provided CSV file is empty.")
+    if df['Risk'].nunique() < 2:
+        raise ValueError("The target variable 'Risk' must contain at least two unique classes for training.")
 
     # Define the feature columns to be used for prediction
     feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts',
@@ -59,7 +63,6 @@ def print_results(lr, X_test_scaled, y_test):
     print("Model Coefficients:", lr.coef_)
     print("Intercept:", lr.intercept_)
     print("\n")
-
 
 # Print results using the function
 if __name__ == "__main__":
