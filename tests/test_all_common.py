@@ -26,7 +26,7 @@ def test_file_not_found():
 
 # Test ID: ALL03
 def test_data_with_empty_csv(empty_csv_path):
-    with patch('pandas.read_csv', return_value=pd.read_csv(empty_csv_path)):
+    with patch('pandas.read_csv', side_effect=pd.errors.EmptyDataError):
         # Checks that it sends a ValueError because the data is empty
         with pytest.raises(ValueError):
             load_and_preprocess()
