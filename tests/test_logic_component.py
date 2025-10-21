@@ -138,7 +138,7 @@ class TestProcess:
 
     # application rejections ------------------------------------------------------------------------------------
 
-    def test_reject_underage(self, base_customer, good_ml_risk_scores):
+    def test_process_reject_underage(self, base_customer, good_ml_risk_scores):
         # make customer underage
         base_customer["age"] = 17
 
@@ -148,7 +148,7 @@ class TestProcess:
         assert "at least 18 years old" in result["reason"], "reason does not include expected value: 'at least 18 years old'"
 
 
-    def test_reject_low_credit_and_income(self, base_customer, good_ml_risk_scores):
+    def test_process_reject_low_credit_and_income(self, base_customer, good_ml_risk_scores):
         # lowering credit score and income
         base_customer["credit_score"] = 500
         base_customer["income"] = 15000
@@ -159,7 +159,7 @@ class TestProcess:
         assert "Credit score and income below minimum" in result["reason"], "reason does not match expected value: 'Credit score and income below minimum'"
 
 
-    def test_reject_credit_amount_too_high(self, base_customer, good_ml_risk_scores):
+    def test_process_reject_credit_amount_too_high(self, base_customer, good_ml_risk_scores):
         # increasing credit amount
         base_customer["credit_amount"] = 300000
 
@@ -169,7 +169,7 @@ class TestProcess:
         assert "exceeds safe borrowing limit" in result["reason"], "reason does not match expected value: 'exceeds safe borrowing limit'"
 
 
-    def test_reject_bad_risk(self, base_customer, bad_ml_risk_scores):
+    def test_process_reject_bad_risk(self, base_customer, bad_ml_risk_scores):
         # use bad_ml_risk_scores fixture which outputs a risk of 1 (bad risk)
         result = process(base_customer, ml_risk_scores=bad_ml_risk_scores)
 
@@ -177,7 +177,7 @@ class TestProcess:
         assert "high risk classification" in result["reason"], "reason does not match expected value: 'high risk classification'"
 
 
-    def test_reject_majority_high_risk(self, base_customer):
+    def test_process_reject_majority_high_risk(self, base_customer):
         # use good_ml_risk_scores fixture which outputs a risk of 0 (good risk)
         ml_risk_scores = [1,1,0]
 
@@ -188,7 +188,7 @@ class TestProcess:
 
     # application flags ------------------------------------------------------------------------------------
 
-    def test_flag_no_bank_accounts(self, base_customer, good_ml_risk_scores):
+    def test_process_flag_no_bank_accounts(self, base_customer, good_ml_risk_scores):
         # zeroing bank account values
         base_customer["savings_accounts"] = 0
         base_customer["checking_account"] = 0
@@ -199,7 +199,7 @@ class TestProcess:
         assert "No active bank accounts/balances" in result["reason"], "reason does not match expected value: 'No active bank accounts/balances'"
 
 
-    def test_flag_long_loan_duration(self, base_customer, good_ml_risk_scores):
+    def test_process_flag_long_loan_duration(self, base_customer, good_ml_risk_scores):
         # increasing loan duration
         base_customer["loan_duration"] = 61
 
@@ -209,7 +209,7 @@ class TestProcess:
         assert "duration exceeds maximum allowed term" in result["reason"], "reason does not match expected value: 'duration exceeds maximum allowed term'"
 
 
-    def test_flag_frequent_job_changes(self, base_customer, good_ml_risk_scores):
+    def test_process_flag_frequent_job_changes(self, base_customer, good_ml_risk_scores):
         # increasing number of jobs
         base_customer["num_of_jobs"] = 4
 
@@ -220,7 +220,7 @@ class TestProcess:
 
     # application approvals ------------------------------------------------------------------------------------
 
-    def test_approve_good_risk(self, base_customer, good_ml_risk_scores):
+    def test_process_approve_good_risk(self, base_customer, good_ml_risk_scores):
         # use good_ml_risk_scores fixture which outputs a risk of 0 (good risk)
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
@@ -229,7 +229,7 @@ class TestProcess:
         assert "meets all criteria" in result["reason"], "reason does not match expected value: 'meets all criteria'"
 
 
-    def test_approve_majority_low_risk(self, base_customer):
+    def test_process_approve_majority_low_risk(self, base_customer):
         # use good_ml_risk_scores fixture which outputs a risk of 0 (good risk)
         ml_risk_scores = [0,0,1]
 
