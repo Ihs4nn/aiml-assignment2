@@ -1,11 +1,18 @@
 import pytest
 import pandas as pd
+from unittest.mock import patch
 import os
 
+from ml_component.logical_regression import load_and_preprocess, train_logistic_regression as lr_load_and_preprocess
+from ml_component.random_forest import load_and_preprocess, train_random_forest as rf_load_and_preprocess
+from ml_component.decision_tree import load_and_preprocess, train_decision_tree as dt_load_and_preprocess
+
+
 @pytest.fixture
-# Creating a valid CSV file for testing
+# Creating a valid CSV file for testing (ALL01 and ALL02)
 def valid_csv_path(tmp_path):
     data = {
+        # fake data simulating the 'balanced_data.csv' structure
         'Age': [25, 45, 35, 55, 22, 60, 41, 33],
         'Sex': ['male', 'female', 'male', 'female', 'male', 'female', 'male', 'female'],
         'Job': ['skilled', 'management', 'unskilled', 'skilled', 'skilled', 'management', 'unskilled', 'skilled'],
@@ -24,7 +31,14 @@ def valid_csv_path(tmp_path):
     df.to_csv(file_path, index=False)
     return str(file_path)
 
-# Creating a CSV file with only one class in the target variable for testing
+# Creating an empty CSV file for testing (ALL03)
+@pytest.fixture
+def empty_csv_path(tmp_path):
+    file_path = tmp_path / "empty_data.csv"
+    file_path.touch()
+    return str(file_path)
+
+# Creating a CSV file with only one class in the target variable for testing (ALL04)
 @pytest.fixture
 def one_class_csv_path(tmp_path):
     """Creates a temporary CSV with only one class in the target variable."""
@@ -45,9 +59,13 @@ def one_class_csv_path(tmp_path):
     df.to_csv(file_path, index=False)
     return str(file_path)
 
-# Creating an empty CSV file for testing
+# Creating a LR model fixture for testing (LR01, LR02, LR03)
 @pytest.fixture
-def empty_csv_path(tmp_path):
-    file_path = tmp_path / "empty_data.csv"
-    file_path.touch()
-    return str(file_path)
+def trained_lr_model(valid_csv_path):
+    # Trains the 'dummy' model and returns specific values for it
+    with patch('pandas.read_csv', return_value=pd.read_csv(valid_csv_path)):
+        X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
+        # Mock joblib.dump to avoid file creation during tests
+        with patch('joblib.dump'):
+            lr_model = lr_load_and_preprocess(X_train_scaled, y_train, cw_dict)
+        return lr_model, X_test_scaled
