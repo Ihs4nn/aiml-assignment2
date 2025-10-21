@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 @pytest.fixture
-# Creating a temporary valid CSV file for testing
+# Creating a valid CSV file for testing
 def valid_csv_path(tmp_path):
     data = {
         'Age': [25, 45, 35, 55, 22, 60, 41, 33],
@@ -22,4 +22,32 @@ def valid_csv_path(tmp_path):
     df = pd.DataFrame(data)
     file_path = tmp_path / "valid_data.csv"
     df.to_csv(file_path, index=False)
+    return str(file_path)
+
+# Creating a CSV file with only one class in the target variable for testing
+@pytest.fixture
+def one_class_csv_path(tmp_path):
+    """Creates a temporary CSV with only one class in the target variable."""
+    data = {
+        'Age': [25, 45, 35, 55], 'Sex': ['male', 'female', 'male', 'female'],
+        'Job': ['skilled', 'management', 'unskilled', 'skilled'],
+        'Housing': ['own', 'rent', 'own', 'free'],
+        'Saving accounts': ['little', 'rich', 'moderate', 'little'],
+        'Checking account': ['moderate', 'rich', 'little', 'moderate'],
+        'Credit amount': [2500, 5000, 3000, 7500], 'Duration': [24, 36, 18, 48],
+        'Purpose': ['radio/TV', 'car', 'furniture', 'business'],
+        'Credit score': [700, 650, 720, 680], 'Income': [50000, 75000, 45000, 90000],
+        # Risk only has 'Good' values
+        'Risk': ['Good', 'Good', 'Good', 'Good'] 
+    }
+    df = pd.DataFrame(data)
+    file_path = tmp_path / "one_class_data.csv"
+    df.to_csv(file_path, index=False)
+    return str(file_path)
+
+# Creating an empty CSV file for testing
+@pytest.fixture
+def empty_csv_path(tmp_path):
+    file_path = tmp_path / "empty_data.csv"
+    file_path.touch()
     return str(file_path)
