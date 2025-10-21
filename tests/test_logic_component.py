@@ -20,6 +20,16 @@ def base_customer():
     }
 
 
+@pytest.fixture
+def good_ml_risk_scores():
+    return [0,0,0]
+
+
+@pytest.fixture
+def bad_ml_risk_scores():
+    return [1,1,1]
+
+
 class TestReject:
     status = "Rejected"
 
@@ -90,6 +100,35 @@ class TestApprove:
         assert result["status"] == self.status, "status does not match expected value: 'Approved'"
         assert result["reason"] == reason, "reason does not match expected value"
         assert result["applicant_id"] is None, "applicant ID does not match expected value"
+
+
+class TestMLRiskScores:
+    def test_mode_all_high_risk(self):
+        ml_risk_scores = [1,1,1]
+
+        risk = mode(ml_risk_scores)
+        assert risk == 1, "risk should be 1 if all three models output risks of 1"
+
+
+    def test_mode_all_low_risk(self):
+        ml_risk_scores = [0,0,0]
+
+        risk = mode(ml_risk_scores)
+        assert risk == 0, "risk should be 0 if all three models output risks of 0"
+
+
+    def test_mode_majority_high_risk(self):
+        ml_risk_scores = [1,1,0]
+
+        risk = mode(ml_risk_scores)
+        assert risk == 1, "risk should be 1 if two of three models output risks of 1"
+
+
+    def test_mode_majority_low_risk(self):
+        ml_risk_scores = [0,0,1]
+
+        risk = mode(ml_risk_scores)
+        assert risk == 0, "risk should be 0 if two of three models output risks of 0"
 
 
 class TestProcess:
