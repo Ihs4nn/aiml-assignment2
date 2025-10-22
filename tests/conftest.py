@@ -69,3 +69,14 @@ def trained_lr_model(valid_csv_path):
         with patch('joblib.dump'):
             lr_model = lr_load_and_preprocess(X_train_scaled, y_train, cw_dict)
         return lr_model, X_test_scaled
+    
+# Creating a RF model fixture for testing (RF01, RF02, RF03)
+@pytest.fixture
+def trained_rf_model(valid_csv_path):
+    # Trains the 'dummy' model and returns specific values for it
+    with patch('pandas.read_csv', return_value=pd.read_csv(valid_csv_path)):
+        X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
+        # Mock joblib.dump to avoid file creation during tests
+        with patch('joblib.dump'):
+            rf_model = rf_load_and_preprocess(X_train_scaled, y_train, cw_dict)
+        return rf_model, X_test_scaled
