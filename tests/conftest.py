@@ -3,9 +3,10 @@ import pandas as pd
 from unittest.mock import patch
 import os
 
-from ml_component.logical_regression import load_and_preprocess, train_logistic_regression as lr_load_and_preprocess
-from ml_component.random_forest import load_and_preprocess, train_random_forest as rf_load_and_preprocess
-from ml_component.decision_tree import load_and_preprocess, train_decision_tree as dt_load_and_preprocess
+from ml_component.logical_regression import load_and_preprocess as lr_load_and_preprocess
+from ml_component.random_forest import load_and_preprocess as rf_load_and_preprocess
+from ml_component.decision_tree import load_and_preprocess as dt_load_and_preprocess
+from ml_component.decision_tree import train_decision_tree as dt_train_decision_tree
 
 
 @pytest.fixture
@@ -64,7 +65,7 @@ def one_class_csv_path(tmp_path):
 def trained_lr_model(valid_csv_path):
     # Trains the 'dummy' model and returns specific values for it
     with patch('pandas.read_csv', return_value=pd.read_csv(valid_csv_path)):
-        X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
+        X_train_scaled, X_test_scaled, y_train, cw_dict = lr_load_and_preprocess()
         # Mock joblib.dump to avoid file creation during tests
         with patch('joblib.dump'):
             lr_model = lr_load_and_preprocess(X_train_scaled, y_train, cw_dict)
@@ -73,10 +74,21 @@ def trained_lr_model(valid_csv_path):
 # Creating a RF model fixture for testing (RF01, RF02, RF03)
 @pytest.fixture
 def trained_rf_model(valid_csv_path):
-    # Trains the 'dummy' model and returns specific values for it
+    # Uses RF functions to train a model and return specific values for it
     with patch('pandas.read_csv', return_value=pd.read_csv(valid_csv_path)):
-        X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
+        X_train_scaled, X_test_scaled, y_train, cw_dict = rf_load_and_preprocess()
         # Mock joblib.dump to avoid file creation during tests
         with patch('joblib.dump'):
             rf_model = rf_load_and_preprocess(X_train_scaled, y_train, cw_dict)
         return rf_model, X_test_scaled
+
+# Creating a DT model fixture for testing (DT01, DT02, DT03)
+@pytest.fixture
+def trained_dt_model(valid_csv_path):
+    # Uses DT functions to train a model and return specific values for it
+    with patch('pandas.read_csv', return_value=pd.read_csv(valid_csv_path)):
+        X_train, X_test, y_train, _, cw_dict = dt_load_and_preprocess()
+        # Mock joblib.dump to avoid file creation during tests
+        with patch('joblib.dump'):
+            dt_model = dt_train_decision_tree(X_train, y_train, cw_dict)
+        return dt_model, X_test
