@@ -16,3 +16,11 @@ def test_rf_estimators_output(trained_rf_model):
     assert hasattr(rf_model, 'n_estimators')
     assert rf_model.n_estimators == 100
     assert len(rf_model.estimators_) == 100
+
+# Test RF03
+def test_predicition_match_input(trained_rf_model):
+    # Gets the predictions and checks their length
+    rf_model, X_test_scaled = trained_rf_model
+    predictions = rf_model.predict(X_test_scaled)
+    assert predictions is not None
+    assert len(predictions) == X_test_scaled.shape[0]
