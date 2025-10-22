@@ -2,7 +2,6 @@ from statistics import mode
 
 # customer_data in format:
 # {
-#   id,
 #   age,
 #   sex,
 #   num_of_jobs,
@@ -18,7 +17,6 @@ from statistics import mode
 # }
 
 example_customer_data = {
-    "id": 1,
     "age": 30,
     "sex": 1, # 1 = male, 0 = female
     "num_of_jobs": 1,
@@ -115,7 +113,6 @@ def process(customer_data, ml_risk_scores):
         result (dict): Dictionary with the status, reason and applicant's ID
     """
     
-    id = customer_data["id"]
     age = customer_data["age"]
     sex = customer_data["sex"]
     num_jobs = customer_data["num_of_jobs"]
