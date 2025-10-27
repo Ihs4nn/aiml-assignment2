@@ -7,14 +7,24 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
-def predict_credit_risk(applicant_features):
-    # Load the ML model
-    ml_model = joblib.load("decision_tree_model.pkl")
-    # Make a prediction based on the persons features
-    prediction = ml_model.predict([applicant_features])
-    # Return the predicition
+# Function used to make predections with decision tree model
+def dt_predict(input_data):
+    try:
+        model = joblib.load("decision_tree_model.pkl")
+        encoders = joblib.load("dt_label_encoders.pkl")
+    except FileNotFoundError:
+        print("Error: model or encoders file not found, run the training scripts first")
+        return None
+    # Similar to testing style, create a dataframe for the input data
+    feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts','Checking account', 'Credit amount', 'Duration', 'Purpose', 'Credit score', 'Income']
+    df_model = pd.DataFrame([input_data], columns=feature_cols)
+    for col in encoders:
+        df_model[col] = encoders[col].transform(df_model[col].astype(str))
+    df_model = df_model[feature_cols]
+    prediction = model.predict(df_model)
+    # Return the predicition for the integration component
     return int(prediction[0])
-
+    
 # Loading dataset and preprocessing
 def load_and_preprocess():
     try:
@@ -32,10 +42,16 @@ def load_and_preprocess():
     X = df[feature_cols].copy()
     y = df['Risk']
 
+    encoders = {}
     categorical_cols = ['Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose']
     for col in categorical_cols:
         le = LabelEncoder()
         X[col] = le.fit_transform(X[col].astype(str))
+        encoders[col] = le
+
+    # Save the label encoders for prediciton function
+    joblib.dump(encoders, "dt_label_encoders.pkl")
+    print("Label encoders saved to 'dt_label_encoders.pkl'")
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
