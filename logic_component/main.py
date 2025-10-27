@@ -2,33 +2,32 @@ from statistics import mode
 
 # customer_data in format:
 # {
-#   age,
-#   sex,
-#   num_of_jobs,
-#   housing,
-#   savings accounts,
-#   checking account,
-#   credit amount,
-#   loan_duration,
-#   purpose,
-#   credit score,
-#   income,
-#   risk
+#   Age,
+#   Sex,
+#   Job,
+#   Housing,
+#   Saving accounts,
+#   Checking account,
+#   Credit amount,
+#   Duration,
+#   Purpose,
+#   Credit score,
+#   Income,
 # }
 
 example_customer_data = {
-    "age": 30,
-    "sex": 1, # 1 = male, 0 = female
-    "num_of_jobs": 1,
-    "housing": 1, # 0 = free, 1 = own, 2 = rent
-    "savings_accounts": 3, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
-    "checking_account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
-    "credit_amount": 2000,
-    "loan_duration": 6, # in months
-    "purpose": 1, # 0 = business, 1 = car, 2 = domestic appliances, 3 = education,
+    "Age": 30,
+    "Sex": 1, # 1 = male, 0 = female
+    "Job": 1,
+    "Housing": 1, # 0 = free, 1 = own, 2 = rent
+    "Saving accounts": 3, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
+    "Checking account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
+    "Credit amount": 2000,
+    "Duration": 6, # in months
+    "Purpose": 1, # 0 = business, 1 = car, 2 = domestic appliances, 3 = education,
                   # 4 = furniture/equipment, 5 = radio/TV, 6 = repairs, 7 = vacation/others
-    "credit_score": 701,
-    "income": 50000,
+    "Credit score": 701,
+    "Income": 50000,
 }
 
 
@@ -112,18 +111,18 @@ def process(customer_data, ml_risk_scores):
     Returns:
         result (dict): Dictionary with the status, reason and applicant's ID
     """
-    
-    age = customer_data["age"]
-    sex = customer_data["sex"]
-    num_jobs = customer_data["num_of_jobs"]
-    housing_status = customer_data["housing"]
-    savings_accounts = customer_data["savings_accounts"]
-    checking_account = customer_data["checking_account"]
-    credit_amount = customer_data["credit_amount"]
-    loan_duration = customer_data["loan_duration"]
-    purpose = customer_data["purpose"]
-    credit_score = customer_data["credit_score"]
-    income = customer_data["income"]
+
+    age = customer_data["Age"]
+    sex = customer_data["Sex"]
+    num_jobs = customer_data["Job"]
+    housing_status = customer_data["Housing"]
+    savings_accounts = customer_data["Saving accounts"]
+    checking_account = customer_data["Checking account"]
+    credit_amount = customer_data["Credit amount"]
+    loan_duration = customer_data["Duration"]
+    purpose = customer_data["Purpose"]
+    credit_score = customer_data["Credit score"]
+    income = customer_data["Income"]
     risk = mode(ml_risk_scores) # 0 = good risk, 1 = bad risk
 
     # strict rules
