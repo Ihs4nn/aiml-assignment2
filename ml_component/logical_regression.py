@@ -7,6 +7,29 @@ from sklearn.metrics import roc_auc_score, log_loss, accuracy_score
 from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
+# --- NEW PREDICTION FUNCTION ---
+def lr_predict(input_data):
+    try:
+        # Load model and preprocessors
+        ml_model = joblib.load("logistic_regression_model.pkl")
+        encoder = joblib.load("lr_ohe_encoder.pkl")
+        scaler = joblib.load("lr_scaler.pkl")
+        non_cat_cols = joblib.load("lr_non_cat_cols.pkl")
+        cat_cols = joblib.load("lr_cat_cols.pkl")
+    except FileNotFoundError:
+        print("Error: model or encoders file not found, run the training scripts first")
+        return None
+    # Create a DataFrame from the input dictionary
+    df_model = pd.DataFrame([input_data])
+    # Apply preprocessing like we did in testing
+    X_encoded = encoder.transform(df_model[cat_cols])
+    X_noncat = df_model[non_cat_cols].values
+    X_final = np.hstack([X_noncat, X_encoded])
+    X_scaled = scaler.transform(X_final)
+    prediction = ml_model.predict(X_scaled)
+    # Return the predicition for the integration component
+    return int(prediction[0])
+
 # Loading dataset and preporocessing 
 def load_and_preprocess():
     try:
@@ -30,6 +53,8 @@ def load_and_preprocess():
     encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
     X_encoded = encoder.fit_transform(X[categorical_cols])
     X_noncat = X.drop(columns=categorical_cols)
+    # Save the encoder and column lists for prediction function
+    non_cat_cols_list = X_noncat.columns.tolist()
     X_final = np.hstack([X_noncat.values, X_encoded])
 
     # Split the data into training and testing sets
@@ -42,6 +67,16 @@ def load_and_preprocess():
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+
+    # Save the preprocessing objects for prediction function
+    joblib.dump(encoder, "lr_ohe_encoder.pkl")
+    print("OneHotEncoder saved to 'lr_ohe_encoder.pkl'")
+    joblib.dump(scaler, "lr_scaler.pkl")
+    print("StandardScaler saved to 'lr_scaler.pkl'")
+    joblib.dump(non_cat_cols_list, "lr_non_cat_cols.pkl")
+    print("Non-categorical column list saved.")
+    joblib.dump(categorical_cols, "lr_cat_cols.pkl")
+    print("Categorical column list saved.")
 
     return X_train_scaled, X_test_scaled, y_train, y_test, cw_dict
 
