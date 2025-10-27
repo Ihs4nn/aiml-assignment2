@@ -7,6 +7,28 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils.class_weight import compute_class_weight
 import joblib
 
+# Function used to make predictions with random forest model
+def rf_predict(input_data):
+    try:
+        model = joblib.load("random_forest_model.pkl")
+        encoder = joblib.load("rf_ohe_encoder.pkl")
+        scaler = joblib.load("rf_scaler.pkl")
+        non_cat_cols = joblib.load("rf_non_cat_cols.pkl")
+        cat_cols = joblib.load("rf_cat_cols.pkl")
+    except FileNotFoundError:
+        print("Error: model or encoders file not found, run the training scripts first")
+        return None
+    # Create a DataFrame from the input dictionary
+    df_model = pd.DataFrame([input_data])
+    # Apply preprocessing like we did in testing
+    X_encoded = encoder.transform(df_model[cat_cols])
+    X_noncat = df_model[non_cat_cols].values
+    X_final = np.hstack([X_noncat, X_encoded])
+    X_scaled = scaler.transform(X_final)
+    prediction = model.predict(X_scaled)
+    # Return the predicition for the integration component
+    return int(prediction[0])
+
 # Function to load and preprocess the dataset
 def load_and_preprocess():
     try:
@@ -28,18 +50,27 @@ def load_and_preprocess():
     encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
     X_encoded = encoder.fit_transform(X[categorical_cols])
     X_noncat = X.drop(columns=categorical_cols)
+    non_cat_cols_list = X_noncat.columns.tolist()
     X_final = np.hstack([X_noncat.values, X_encoded])
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X_final, y, test_size=0.25, random_state=42, stratify=y)
-
     y_classes = np.unique(y_train)
     class_weights = compute_class_weight(class_weight='balanced', classes=y_classes, y=y_train)
     cw_dict = {cls: weight for cls, weight in zip(y_classes, class_weights)}
-
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+
+    # Save the preprocessing objects for prediction function
+    joblib.dump(encoder, "rf_ohe_encoder.pkl")
+    print("OneHotEncoder saved to 'rf_ohe_encoder.pkl'")
+    joblib.dump(scaler, "rf_scaler.pkl")
+    print("StandardScaler saved to 'rf_scaler.pkl'")
+    joblib.dump(non_cat_cols_list, "rf_non_cat_cols.pkl")
+    print("Non-categorical column list saved.")
+    joblib.dump(categorical_cols, "rf_cat_cols.pkl")
+    print("Categorical column list saved.")
 
     return X_train_scaled, X_test_scaled, y_train, y_test, cw_dict
 
