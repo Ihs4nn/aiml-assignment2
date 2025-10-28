@@ -22,8 +22,9 @@ class LoanAppGUI(tk.Tk):
         # Create submit button
         self.submit_button = tk.Button(self, text="Submit Application", command=self.submit_application)
         self.submit_button.pack(pady=20)
-        # Create result label (initially empty)
-        self.result_label = tk.Label(self, text="", font=("Arial", 14), pady=10)
+        # Create result text:
+        tk.Label(self, text="Application Result:").pack()
+        self.result_label = tk.Text(self, height=15, width=100)
         self.result_label.pack()
 
     # Function to create input fields
@@ -106,25 +107,28 @@ class LoanAppGUI(tk.Tk):
         # Using logic component to get result
         ml_risk_scores = [dt_score, lr_score, rf_score]
         result = process(customer_data, ml_risk_scores)
+        # Display the result in the result text area
+        self.result_label.delete(1.0, tk.END)  # Clear previous result
         info = (
             f"Status: {result['status']}\n"
             f"Reason: {result['reason']}\n\n"
             f"ML Risk Scores:\n"
-            f"  Decision Tree: {dt_score}\n"
+            f"  Decision Tree: {dt_score}\n" 
             f"  Logistic Regression: {lr_score}\n"
             f"  Random Forest: {rf_score}\n"
         )
-        # Set color based on status
-        status = result['status'].lower()
-        if "approved" in status:
-            color = "green"
-        elif "rejected" in status:
-            color = "red"
-        elif "flagged" in status:
-            color = "yellow"
+        self.result_label.insert(tk.END, info)
+
+        # Adding UX colour enhancement for customers
+        if result['status'] == "Approved":
+            messagebox.showinfo("Application Result", "Congratulations! Your loan application has been approved.")
+            self.result_text.config(fg="green")
+        elif result['status'] == "Rejected":
+            messagebox.showinfo("Application Result", "We're sorry, but your loan application has been rejected.")
+            self.result_text.config(fg="red")
         else:
-            color = "black"
-        self.result_label.config(text=info, fg=color)
+            messagebox.showinfo("Application Result", "Your loan application has been flagged for review.")
+            self.result_text.config(fg="orange")
 
 # Function used to train ML models
 def train_models():
