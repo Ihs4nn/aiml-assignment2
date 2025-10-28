@@ -22,6 +22,9 @@ class LoanAppGUI(tk.Tk):
         # Create submit button
         self.submit_button = tk.Button(self, text="Submit Application", command=self.submit_application)
         self.submit_button.pack(pady=20)
+        # Create result label (initially empty)
+        self.result_label = tk.Label(self, text="", font=("Arial", 14), pady=10)
+        self.result_label.pack()
 
     # Function to create input fields
     def create_input_fields(self):
@@ -103,8 +106,25 @@ class LoanAppGUI(tk.Tk):
         # Using logic component to get result
         ml_risk_scores = [dt_score, lr_score, rf_score]
         result = process(customer_data, ml_risk_scores)
-        messagebox.showinfo("Application Result", f"Status: {result['status']}\nReason: {result['reason']}")
-        messagebox.showinfo("ML Risk Scores", f"Decision Tree: {dt_score}\nLogistic Regression: {lr_score}\nRandom Forest: {rf_score}")
+        info = (
+            f"Status: {result['status']}\n"
+            f"Reason: {result['reason']}\n\n"
+            f"ML Risk Scores:\n"
+            f"  Decision Tree: {dt_score}\n"
+            f"  Logistic Regression: {lr_score}\n"
+            f"  Random Forest: {rf_score}\n"
+        )
+        # Set color based on status
+        status = result['status'].lower()
+        if "approved" in status:
+            color = "green"
+        elif "rejected" in status:
+            color = "red"
+        elif "flagged" in status:
+            color = "yellow"
+        else:
+            color = "black"
+        self.result_label.config(text=info, fg=color)
 
 # Function used to train ML models
 def train_models():
