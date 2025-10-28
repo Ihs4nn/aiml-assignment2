@@ -16,7 +16,7 @@ class LoanAppGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Loan Application Decision System")
-        self.geometry("1000x650")
+        self.geometry("1000x1200")
         # Create input fields
         self.create_input_fields()
         # Create submit button
@@ -118,17 +118,6 @@ class LoanAppGUI(tk.Tk):
             f"  Random Forest: {rf_score}\n"
         )
         self.result_label.insert(tk.END, info)
-
-        # Adding UX colour enhancement for customers
-        if result['status'] == "Approved":
-            messagebox.showinfo("Application Result", "Congratulations! Your loan application has been approved.")
-            self.result_text.config(fg="green")
-        elif result['status'] == "Rejected":
-            messagebox.showinfo("Application Result", "We're sorry, but your loan application has been rejected.")
-            self.result_text.config(fg="red")
-        else:
-            messagebox.showinfo("Application Result", "Your loan application has been flagged for review.")
-            self.result_text.config(fg="orange")
 
 # Function used to train ML models
 def train_models():
