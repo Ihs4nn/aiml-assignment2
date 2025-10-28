@@ -89,15 +89,15 @@ def train_logistic_regression(X_train_scaled, y_train, cw_dict):
     return lr
 
 # Function to print evaluation results
-def print_results(lr, X_test_scaled, y_test):
-    y_pred_lr = lr.predict(X_test_scaled)
-    print("\nLogistic Regression Results:")
-    print("Accuracy:", accuracy_score(y_test, y_pred_lr))
-    print("ROC-AUC:", roc_auc_score(y_test, lr.predict_proba(X_test_scaled)[:, 1]))
-    print("Log-loss:", log_loss(y_test, lr.predict_proba(X_test_scaled)))
-    print("Model Coefficients:", lr.coef_)
-    print("Intercept:", lr.intercept_)
-    print("\n")
+# def print_results(lr, X_test_scaled, y_test):
+#     y_pred_lr = lr.predict(X_test_scaled)
+#     print("\nLogistic Regression Results:")
+#     print("Accuracy:", accuracy_score(y_test, y_pred_lr))
+#     print("ROC-AUC:", roc_auc_score(y_test, lr.predict_proba(X_test_scaled)[:, 1]))
+#     print("Log-loss:", log_loss(y_test, lr.predict_proba(X_test_scaled)))
+#     print("Model Coefficients:", lr.coef_)
+#     print("Intercept:", lr.intercept_)
+#     print("\n")
 
 # Print results using the function
 if __name__ == "__main__":

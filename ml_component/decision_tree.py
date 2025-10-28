@@ -74,13 +74,13 @@ def train_decision_tree(X_train_scaled, y_train, cw_dict):
     return dt
 
 # Function to print evaluation results
-def print_results(dt, X_test_scaled, y_test):
-    y_pred_dt = dt.predict(X_test_scaled)
-    print("\nDecision Tree Results:")
-    print("Accuracy:", accuracy_score(y_test, y_pred_dt))
-    print("ROC-AUC:", roc_auc_score(y_test, dt.predict_proba(X_test_scaled)[:, 1]))
-    print("Tree Depth:", dt.get_depth())
-    print("\n")
+# def print_results(dt, X_test_scaled, y_test):
+#     y_pred_dt = dt.predict(X_test_scaled)
+#     print("\nDecision Tree Results:")
+#     print("Accuracy:", accuracy_score(y_test, y_pred_dt))
+#     print("ROC-AUC:", roc_auc_score(y_test, dt.predict_proba(X_test_scaled)[:, 1]))
+#     print("Tree Depth:", dt.get_depth())
+#     print("\n")
 
 if __name__ == "__main__":
     X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()

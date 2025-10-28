@@ -83,13 +83,13 @@ def train_random_forest(X_train_scaled, y_train, cw_dict):
     return rf
 
 # Function to print evaluation results
-def print_results(rf, X_test_scaled, y_test):
-    y_pred_rf = rf.predict(X_test_scaled)
-    print("\nRandom Forest Results:")
-    print("Accuracy:", accuracy_score(y_test, y_pred_rf))
-    print("ROC-AUC:", roc_auc_score(y_test, rf.predict_proba(X_test_scaled)[:, 1]))
-    print("Feature Importances:", rf.feature_importances_)
-    print("\n")
+# def print_results(rf, X_test_scaled, y_test):
+#     y_pred_rf = rf.predict(X_test_scaled)
+#     print("\nRandom Forest Results:")
+#     print("Accuracy:", accuracy_score(y_test, y_pred_rf))
+#     print("ROC-AUC:", roc_auc_score(y_test, rf.predict_proba(X_test_scaled)[:, 1]))
+#     print("Feature Importances:", rf.feature_importances_)
+#     print("\n")
 
 if __name__ == "__main__":
     X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()

@@ -115,6 +115,6 @@ def train_models():
 
 
 if __name__ == "__main__":
-    if train_models():
-        app = LoanAppGUI()
-        app.mainloop()
+    train_models()
+    app = LoanAppGUI()
+    app.mainloop()
