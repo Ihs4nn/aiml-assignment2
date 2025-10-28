@@ -112,17 +112,17 @@ def process(customer_data, ml_risk_scores):
         result (dict): Dictionary with the status, reason and applicant's ID
     """
 
-    age = customer_data["Age"]
-    sex = customer_data["Sex"]
-    num_jobs = customer_data["Job"]
-    housing_status = customer_data["Housing"]
-    savings_accounts = customer_data["Saving accounts"]
-    checking_account = customer_data["Checking account"]
-    credit_amount = customer_data["Credit amount"]
-    loan_duration = customer_data["Duration"]
-    purpose = customer_data["Purpose"]
-    credit_score = customer_data["Credit score"]
-    income = customer_data["Income"]
+    age = customer_data.get("Age")
+    sex = customer_data.get("Sex")
+    num_jobs = customer_data.get("Job")
+    housing_status = customer_data.get("Housing")
+    savings_accounts = customer_data.get("Saving accounts")
+    checking_account = customer_data.get("Checking account")
+    credit_amount = customer_data.get("Credit amount")
+    loan_duration = customer_data.get("Duration")
+    purpose = customer_data.get("Purpose")
+    credit_score = customer_data.get("Credit score")
+    income = customer_data.get("Income")
     risk = mode(ml_risk_scores) # 0 = good risk, 1 = bad risk
 
     # strict rules
