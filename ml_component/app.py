@@ -1,15 +1,14 @@
 import tkinter as tk
 from tkinter import messagebox
-from ml_component.random_forest import rf_predict
-from ml_component.decision_tree import dt_predict
-from ml_component.logical_regression import lr_predict
-from logic_component.main import process
+# from random_forest import rf_predict
+# from decision_tree import dt_predict
+# from logical_regression import lr_predict
 
 class LoanAppGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Loan Application Decision System")
-        self.geometry("400x600")
+        self.geometry("1000x650")
         # Create input fields
         self.create_input_fields()
         # Create submit button
@@ -91,3 +90,6 @@ class LoanAppGUI(tk.Tk):
             messagebox.showinfo("Processing", "Your application is being processed. Please wait...")
             print("Customer Data:", customer_data)
     
+if __name__ == "__main__":
+    app = LoanAppGUI()
+    app.mainloop()
