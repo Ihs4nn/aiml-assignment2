@@ -85,5 +85,5 @@ def train_decision_tree(X_train_scaled, y_train, cw_dict):
 if __name__ == "__main__":
     X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
     dt = train_decision_tree(X_train_scaled, y_train, cw_dict)
-    print_results(dt, X_test_scaled, y_test)
+    # print_results(dt, X_test_scaled, y_test)
 

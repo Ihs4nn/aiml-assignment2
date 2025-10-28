@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-from decision_tree import load_and_preprocess as dt_load_and_preprocess, train_decision_tree, print_results as dt_print_results
-from logical_regression import load_and_preprocess as lr_load_and_preprocess, train_logistic_regression, print_results as lr_print_results
-from random_forest import load_and_preprocess as rf_load_and_preprocess, train_random_forest, print_results as rf_print_results
+from decision_tree import load_and_preprocess as dt_load_and_preprocess, train_decision_tree
+from logical_regression import load_and_preprocess as lr_load_and_preprocess, train_logistic_regression
+from random_forest import load_and_preprocess as rf_load_and_preprocess, train_random_forest
 
 
 class LoanAppGUI(tk.Tk):
@@ -98,17 +98,14 @@ def train_models():
         print("Training Decision Tree Model")
         X_train_dt, X_test_dt, y_train_dt, y_test_dt, cw_dict_dt = dt_load_and_preprocess()
         dt_model = train_decision_tree(X_train_dt, y_train_dt, cw_dict_dt)
-        dt_print_results(dt_model, X_test_dt, y_test_dt)
         # Training the Logisitic Regression model to be used when submitting applications
         print("Training Logistic Regression Model")
         X_train_lr, X_test_lr, y_train_lr, y_test_lr, cw_dict_lr = lr_load_and_preprocess()
         lr_model = train_logistic_regression(X_train_lr, y_train_lr, cw_dict_lr)
-        lr_print_results(lr_model, X_test_lr, y_test_lr)
         # Training the Random Forest model to be used when submitting applications
         print("Training Random Forest Model")
         X_train_rf, X_test_rf, y_train_rf, y_test_rf, cw_dict_rf = rf_load_and_preprocess()
         rf_model = train_random_forest(X_train_rf, y_train_rf, cw_dict_rf)
-        rf_print_results(rf_model, X_test_rf, y_test_rf)
         print("All models trained and saved.")
     except Exception as e:
         print("Error during model training:", str(e))

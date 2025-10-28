@@ -94,4 +94,4 @@ def train_random_forest(X_train_scaled, y_train, cw_dict):
 if __name__ == "__main__":
     X_train_scaled, X_test_scaled, y_train, y_test, cw_dict = load_and_preprocess()
     rf = train_random_forest(X_train_scaled, y_train, cw_dict)
-    print_results(rf, X_test_scaled, y_test)
+    # print_results(rf, X_test_scaled, y_test)
