@@ -5,18 +5,17 @@ from logic_component.main import reject, flag, approve, process
 @pytest.fixture
 def base_customer():
     return {
-        "id": 1,
-        "age": 30,
-        "sex": 1,
-        "num_of_jobs": 1,
-        "housing": 1,
-        "savings_accounts": 3,
-        "checking_account": 2,
-        "credit_amount": 2000,
-        "loan_duration": 6,
-        "purpose": 1,
-        "credit_score": 701,
-        "income": 50000,
+        "Age": 30,
+        "Sex": 1,
+        "Job": 1,
+        "Housing": 1,
+        "Saving Accounts": 3,
+        "Checking account": 2,
+        "Credit amount": 2000,
+        "Duration": 6,
+        "Purpose": 1,
+        "Credit score": 701,
+        "Income": 50000,
     }
 
 
@@ -140,7 +139,7 @@ class TestProcess:
 
     def test_process_reject_underage(self, base_customer, good_ml_risk_scores):
         # make customer underage
-        base_customer["age"] = 17
+        base_customer["Age"] = 17
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -150,7 +149,7 @@ class TestProcess:
 
     def test_process_reject_low_credit(self, base_customer, good_ml_risk_scores):
         # lowering credit score
-        base_customer["credit_score"] = 500
+        base_customer["Credit score"] = 500
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -160,7 +159,7 @@ class TestProcess:
     
     def test_process_reject_low_income(self, base_customer, good_ml_risk_scores):
         # lowering income
-        base_customer["income"] = 15000
+        base_customer["Income"] = 15000
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -171,7 +170,7 @@ class TestProcess:
     def test_process_reject_credit_amount_too_high(self, base_customer, good_ml_risk_scores):
         # increasing credit amount to be more than 5 * income
         # base customer income = 50,000
-        base_customer["credit_amount"] = 300000
+        base_customer["Credit amount"] = 300000
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -200,8 +199,8 @@ class TestProcess:
 
     def test_process_flag_no_bank_accounts(self, base_customer, good_ml_risk_scores):
         # zeroing bank account values
-        base_customer["savings_accounts"] = 0
-        base_customer["checking_account"] = 0
+        base_customer["Saving accounts"] = 0
+        base_customer["Checking account"] = 0
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -211,7 +210,7 @@ class TestProcess:
 
     def test_process_flag_long_loan_duration(self, base_customer, good_ml_risk_scores):
         # increasing loan duration
-        base_customer["loan_duration"] = 61
+        base_customer["Duration"] = 61
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
@@ -221,7 +220,7 @@ class TestProcess:
 
     def test_process_flag_frequent_job_changes(self, base_customer, good_ml_risk_scores):
         # increasing number of jobs
-        base_customer["num_of_jobs"] = 4
+        base_customer["Job"] = 4
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
