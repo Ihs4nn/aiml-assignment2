@@ -1,8 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 from decision_tree import load_and_preprocess as dt_load_and_preprocess, train_decision_tree
+from logic_component.main import process
 from logical_regression import load_and_preprocess as lr_load_and_preprocess, train_logistic_regression
 from random_forest import load_and_preprocess as rf_load_and_preprocess, train_random_forest
+from decision_tree import dt_predict
+from logical_regression import lr_predict
+from random_forest import rf_predict
 
 
 class LoanAppGUI(tk.Tk):
@@ -87,9 +91,18 @@ class LoanAppGUI(tk.Tk):
     # Function to submit the application
     def submit_application(self):
         customer_data = self.get_customer_data()
-        if customer_data is not None:
-            messagebox.showinfo("Processing", "Your application is being processed. Please wait...")
-            print("Customer Data:", customer_data)
+        if customer_data is None:
+            return
+        
+        # Getting predictions from all three models
+        dt_score = dt_predict(customer_data)
+        lr_score = lr_predict(customer_data)
+        rf_score = rf_predict(customer_data)
+        # Using logic component to get result
+        ml_risk_scores = [dt_score, lr_score, rf_score]
+        result = process(customer_data, ml_risk_scores)
+        messagebox.showinfo("Application Result", f"Status: {result['status']}\nReason: {result['reason']}")
+        messagebox.showinfo("ML Risk Scores", f"Decision Tree: {dt_score}\nLogistic Regression: {lr_score}\nRandom Forest: {rf_score}")
 
 # Function used to train ML models
 def train_models():
