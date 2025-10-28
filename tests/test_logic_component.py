@@ -168,9 +168,8 @@ class TestProcess:
 
 
     def test_process_reject_credit_amount_too_high(self, base_customer, good_ml_risk_scores):
-        # increasing credit amount to be more than 5 * income
-        # base customer income = 50,000
-        base_customer["Credit amount"] = 300000
+        # increasing credit amount to be more than the £60k limit
+        base_customer["Credit amount"] = 70000
 
         result = process(base_customer, ml_risk_scores=good_ml_risk_scores)
 
