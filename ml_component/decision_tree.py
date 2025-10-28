@@ -19,7 +19,7 @@ def dt_predict(input_data):
     feature_cols = ['Age', 'Sex', 'Job', 'Housing', 'Saving accounts','Checking account', 'Credit amount', 'Duration', 'Purpose', 'Credit score', 'Income']
     df_model = pd.DataFrame([input_data], columns=feature_cols)
     for col in encoders:
-        df_model[col] = encoders[col].transform(df_model[col].astype(str))
+        df_model[col] = encoders[col].transform(df_model[col].astype(int))
     df_model = df_model[feature_cols]
     prediction = model.predict(df_model)
     # Return the predicition for the integration component
@@ -46,7 +46,7 @@ def load_and_preprocess():
     categorical_cols = ['Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose']
     for col in categorical_cols:
         le = LabelEncoder()
-        X[col] = le.fit_transform(X[col].astype(str))
+        X[col] = le.fit_transform(X[col].astype(int))
         encoders[col] = le
 
     # Save the label encoders for prediciton function

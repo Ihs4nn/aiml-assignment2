@@ -21,13 +21,14 @@ def lr_predict(input_data):
         return None
     # Create a DataFrame from the input dictionary
     df_model = pd.DataFrame([input_data])
-    # Apply preprocessing like we did in testing
+    # Convert categorical columns to int for encoding
+    for col in cat_cols:
+        df_model[col] = df_model[col].astype(int)
     X_encoded = encoder.transform(df_model[cat_cols])
     X_noncat = df_model[non_cat_cols].values
     X_final = np.hstack([X_noncat, X_encoded])
     X_scaled = scaler.transform(X_final)
     prediction = ml_model.predict(X_scaled)
-    # Return the predicition for the integration component
     return int(prediction[0])
 
 # Loading dataset and preporocessing 
@@ -51,6 +52,9 @@ def load_and_preprocess():
     # Categorical columns that need to be encoded
     categorical_cols = ['Sex', 'Job', 'Housing', 'Saving accounts', 'Checking account', 'Purpose']
     encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+    # Convert categorical columns to int for encoding
+    for col in categorical_cols:
+        X[col] = X[col].astype(int)
     X_encoded = encoder.fit_transform(X[categorical_cols])
     X_noncat = X.drop(columns=categorical_cols)
     # Save the encoder and column lists for prediction function

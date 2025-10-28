@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import tkinter as tk
 from tkinter import messagebox
 from decision_tree import load_and_preprocess as dt_load_and_preprocess, train_decision_tree
@@ -93,7 +96,6 @@ class LoanAppGUI(tk.Tk):
         customer_data = self.get_customer_data()
         if customer_data is None:
             return
-        
         # Getting predictions from all three models
         dt_score = dt_predict(customer_data)
         lr_score = lr_predict(customer_data)
@@ -122,7 +124,6 @@ def train_models():
         print("All models trained and saved.")
     except Exception as e:
         print("Error during model training:", str(e))
-
 
 if __name__ == "__main__":
     train_models()
