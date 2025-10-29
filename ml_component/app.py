@@ -11,7 +11,6 @@ from decision_tree import dt_predict
 from logical_regression import lr_predict
 from random_forest import rf_predict
 
-
 class LoanAppGUI(tk.Tk):
     def __init__(self):
         super().__init__()

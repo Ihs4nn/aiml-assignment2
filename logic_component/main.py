@@ -17,7 +17,7 @@ from statistics import mode
 
 example_customer_data = {
     "Age": 30,
-    "Sex": 1, # 1 = male, 0 = female
+    "Sex": 1, # 1 = male, 2 = female
     "Job": 1,
     "Housing": 1, # 0 = free, 1 = own, 2 = rent
     "Saving accounts": 3, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich

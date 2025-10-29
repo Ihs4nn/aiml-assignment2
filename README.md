@@ -33,6 +33,12 @@ This project is a rule-based loan assessment system built in Python. It evaluate
     pip install -r requirements.txt
 ```
 
+### Run the app
+```zsh
+    cd ml_component
+    python3 app.py
+```
+
 ## Tests
 
 ### Run the tests in the terminal.
