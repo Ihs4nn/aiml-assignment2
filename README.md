@@ -14,9 +14,9 @@ This project is a rule-based loan assessment system built in Python. It evaluate
 
 ## Getting Started
 
-### 1. Clone the Repository
+### 1. Clone the Repository.
 
-```bash
+```zsh
     git clone https://github.com/Ihs4nn/aiml-assignment2.git
     cd aiml-assignment2
 ```
@@ -33,9 +33,17 @@ This project is a rule-based loan assessment system built in Python. It evaluate
     pip install -r requirements.txt
 ```
 
-### Run the app
+## Running the App
+
+### 1. Change directory to the ml_component.
+
 ```zsh
     cd ml_component
+```
+
+### 2. Run the app.
+
+```zsh
     python3 app.py
 ```
 

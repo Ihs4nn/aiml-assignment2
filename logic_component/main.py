@@ -19,13 +19,12 @@ example_customer_data = {
     "Age": 30,
     "Sex": 1, # 1 = male, 2 = female
     "Job": 1,
-    "Housing": 1, # 0 = free, 1 = own, 2 = rent
-    "Saving accounts": 3, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
-    "Checking account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = quite rich, 4 = rich
+    "Housing": 2, # 1 = free, 2 = own, 3 = rent
+    "Saving accounts": 4, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
+    "Checking account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
     "Credit amount": 2000,
     "Duration": 6, # in months
-    "Purpose": 1, # 0 = business, 1 = car, 2 = domestic appliances, 3 = education,
-                  # 4 = furniture/equipment, 5 = radio/TV, 6 = repairs, 7 = vacation/others
+    "Purpose": 2, # 0 = NA, 1 = business, 2 = car, 3 = education, 4 = furniture/equipment, 5 = radio/TV
     "Credit score": 701,
     "Income": 50000,
 }
