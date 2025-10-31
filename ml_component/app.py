@@ -33,23 +33,23 @@ class LoanAppGUI(tk.Tk):
         self.age_entry = tk.Entry(self)
         self.age_entry.pack()
         # Sex field
-        tk.Label(self, text="Sex* (1=Male, 0=Female):").pack()
+        tk.Label(self, text="Sex* (1=Female, 2=Male):").pack()
         self.sex_entry = tk.Entry(self)
         self.sex_entry.pack()
         # Job field
-        tk.Label(self, text="Jobs* (0=Unemployed, 1=Employed, 2=Self-Employed):").pack()
+        tk.Label(self, text="Jobs* (1=Employed, 2=Self-Employed, 3=Unemployed):").pack()
         self.job_entry = tk.Entry(self)
         self.job_entry.pack()
         # Housing
-        tk.Label(self, text="Housing* (0=Free, 1=Own, 2=Rent):").pack()
+        tk.Label(self, text="Housing* (1=Free, 2=Own, 3=Rent):").pack()
         self.housing_entry = tk.Entry(self)
         self.housing_entry.pack()
         # Saving accounts
-        tk.Label(self, text="Saving Accounts* (0=None, 1=Low, 2=Medium, 3=High, 4=Very High):").pack()
+        tk.Label(self, text="Saving Accounts* (1=Low, 2=Medium, 3=None, 4=Very High):").pack()
         self.saving_entry = tk.Entry(self)
         self.saving_entry.pack()
         # Checking account
-        tk.Label(self, text="Checking Account* (0=None, 1=Low, 2=Medium, 3=High, 4=Very High):").pack()
+        tk.Label(self, text="Checking Account* (1=Low, 2=Medium, 3=None, 4=Very High):").pack()
         self.checking_entry = tk.Entry(self)
         self.checking_entry.pack()
         # Credit amount
