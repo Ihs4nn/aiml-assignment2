@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch
+import numbers
 
 from ml_component.logical_regression import load_and_preprocess
 
@@ -14,7 +15,7 @@ def test_successful_data_loading(valid_csv_path):
         assert len(y_train) > 0
         assert len(y_test) > 0
         assert isinstance(cw_dict, dict)
-        assert all(isinstance(key, (int, str)) for key in cw_dict.keys())
+        assert all(isinstance(key, (numbers.Integral, str)) for key in cw_dict.keys())
         assert all(isinstance(value, float) for value in cw_dict.values())
 
 # Test ID: ALL02
