@@ -49,7 +49,13 @@ This project is a rule-based loan assessment system built in Python. It evaluate
 
 ## Tests
 
-### Run the tests in the terminal.
+### 1. Change directory to tests.
+
+```zsh
+    cd tests
+```
+
+### 2. Run the tests in the terminal.
 
 ```zsh
     pytest
