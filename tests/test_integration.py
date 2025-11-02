@@ -9,34 +9,50 @@ from ml_component.random_forest import load_and_preprocess as rf_load_and_prepro
 from ml_component.logical_regression import load_and_preprocess as lr_load_and_preprocess, train_logistic_regression
 
 # Test IT01-03
-@pytest.mark.parametrize("train_func, model_filename", [
-    (train_decision_tree, "decision_tree_model.pkl"),
-    (train_random_forest, "random_forest_model.pkl"),
-    (train_logistic_regression, "logistic_regression_model.pkl"),
+@pytest.mark.parametrize("train_func, load_func, expected_files", [
+    (
+        train_decision_tree,
+        dt_load_and_preprocess,
+        ["decision_tree_model.pkl", "dt_label_encoders.pkl"]
+    ),
+    (
+        train_random_forest,
+        rf_load_and_preprocess,
+        ["random_forest_model.pkl", "rf_ohe_encoder.pkl", "rf_scaler.pkl", "rf_non_cat_cols.pkl", "rf_cat_cols.pkl"]
+    ),
+    (
+        train_logistic_regression,
+        lr_load_and_preprocess,
+        ["logistic_regression_model.pkl", "lr_ohe_encoder.pkl", "lr_scaler.pkl", "lr_non_cat_cols.pkl", "lr_cat_cols.pkl"]
+    ),
 ])
-def test_create_model_files(tmp_path, train_func, model_filename):
-    # Prepare dummy data for training
-    if "decision_tree" in model_filename:
-        X_train, _, y_train, _, cw_dict = dt_load_and_preprocess()
-    elif "random_forest" in model_filename:
-        X_train, _, y_train, _, cw_dict = rf_load_and_preprocess()
-    else:
-        X_train, _, y_train, _, cw_dict = lr_load_and_preprocess()
-
-    # Patch joblib.dump to write to tmp_path
-    model_path = tmp_path / model_filename
+def test_create_model_files(tmp_path, train_func, load_func, expected_files):
+    
+    created_files = []
 
     # Save the original function to avoid recursion
     original_joblib_dump = joblib.dump
 
     with patch("joblib.dump") as mock_dump:
         def fake_dump(obj, filename, *args, **kwargs):
-            # Use the original, unpatched joblib.dump
-            # Save the model to the temporary directory
-            return original_joblib_dump(obj, model_path)
-        mock_dump.side_effect = fake_dump
+            # If the filename is a string and ends with .pkl, redirect to tmp_path
+            if isinstance(filename, str) and filename.endswith('.pkl'):
+                # Ensure path is only tmp_path with just the file name (not the whole path from filename)
+                redirected_path = tmp_path / os.path.basename(filename)
+                created_files.append(redirected_path)
+                # Use the original, unpatched joblib.dump and saves files to the temporary directory
+                return original_joblib_dump(obj, redirected_path)
+            # If it's not a .pkl file, just use the original
+            return original_joblib_dump(obj, filename)
 
+        mock_dump.side_effect = fake_dump
+        # Intercept the below, where joblib.dump occurs, in the patch
+        # Load and preprocess
+        X_train, _, y_train, _, cw_dict = load_func()
+        # Train the models
         model = train_func(X_train, y_train, cw_dict)
 
-    # Now check that the file exists in the temp directory
-    assert model_path.exists(), f"Model file {model_path} was not created in test environment."
+    # Now check that all expected files exist in tmp_path
+    for file_name in expected_files:
+        file_path = tmp_path / file_name
+        assert file_path.exists(), f"{file_name} was not created in test environment."
