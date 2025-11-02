@@ -59,3 +59,39 @@ def test_create_and_load_model_files(tmp_path, train_func, load_func, expected_f
 
         loaded_obj = joblib.load(file_path)
         assert loaded_obj is not None, f"{file_name} could not be loaded with joblib."
+
+# Test IT04
+def test_decision_tree_prediction(trained_dt_model):
+    dt_model, X_test = trained_dt_model
+    y_pred = dt_model.predict(X_test)
+
+    # Check that a prediction is returned
+    assert y_pred is not None
+    # Check that the number of predictions = number of samples in test dataset
+    assert len(y_pred) == X_test.shape[0]
+    # Check that predictions are in expected class set (0 or 1)
+    assert set(np.unique(y_pred)).issubset({0, 1})
+
+# Test IT05
+def test_random_forest_prediction(trained_rf_model):
+    rf_model, X_test = trained_rf_model
+    y_pred = rf_model.predict(X_test)
+
+    # Check that a prediction is returned
+    assert y_pred is not None
+    # Check that the number of predictions = number of samples in test dataset
+    assert len(y_pred) == X_test.shape[0]
+    # Check that predictions are in expected class set (0 or 1)
+    assert set(np.unique(y_pred)).issubset({0, 1})
+
+# Test IT06
+def test_logistic_regression_prediction(trained_lr_model):
+    lr_model, X_test = trained_lr_model
+    y_pred = lr_model.predict(X_test)
+
+    # Check that a prediction is returned
+    assert y_pred is not None
+    # Check that the number of predictions = number of samples in test dataset
+    assert len(y_pred) == X_test.shape[0]
+    # Check that predictions are in expected class set (0 or 1)
+    assert set(np.unique(y_pred)).issubset({0, 1})
