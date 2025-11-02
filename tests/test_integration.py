@@ -26,7 +26,7 @@ from ml_component.logical_regression import load_and_preprocess as lr_load_and_p
         ["logistic_regression_model.pkl", "lr_ohe_encoder.pkl", "lr_scaler.pkl", "lr_non_cat_cols.pkl", "lr_cat_cols.pkl"]
     ),
 ])
-def test_create_model_files(tmp_path, train_func, load_func, expected_files):
+def test_create_and_load_model_files(tmp_path, train_func, load_func, expected_files):
     
     created_files = []
 
@@ -52,7 +52,10 @@ def test_create_model_files(tmp_path, train_func, load_func, expected_files):
         # Train the models
         model = train_func(X_train, y_train, cw_dict)
 
-    # Now check that all expected files exist in tmp_path
+    # Check that all expected files exist in tmp_path and can be loaded
     for file_name in expected_files:
         file_path = tmp_path / file_name
         assert file_path.exists(), f"{file_name} was not created in test environment."
+
+        loaded_obj = joblib.load(file_path)
+        assert loaded_obj is not None, f"{file_name} could not be loaded with joblib."
