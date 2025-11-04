@@ -37,7 +37,7 @@ class LoanAppGUI(tk.Tk):
         self.sex_entry = tk.Entry(self)
         self.sex_entry.pack()
         # Job field
-        tk.Label(self, text="Jobs* (1=Employed, 2=Self-Employed, 3=Unemployed):").pack()
+        tk.Label(self, text="Jobs* (1=Temporary, 2=Permanent, 3=Professional):").pack()
         self.job_entry = tk.Entry(self)
         self.job_entry.pack()
         # Housing
@@ -61,7 +61,7 @@ class LoanAppGUI(tk.Tk):
         self.duration_entry = tk.Entry(self)
         self.duration_entry.pack()
         # Purpose
-        tk.Label(self, text="Purpose* (0=Business, 1=Car, 2=Domestic Appliances, 3=Education, 4=Furniture/Equipment, 5=Radio/TV, 6=Repairs, 7=Vacation/Others):").pack()
+        tk.Label(self, text="Purpose* (1=Business, 2=Car, 3=Education, 4=Furniture/Equipment, 5=Radio/TV):").pack()
         self.purpose_entry = tk.Entry(self)
         self.purpose_entry.pack()
         # Credit Score
