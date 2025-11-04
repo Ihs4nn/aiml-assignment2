@@ -32,42 +32,72 @@ class LoanAppGUI(tk.Tk):
         tk.Label(self, text="Age*:").pack()
         self.age_entry = tk.Entry(self)
         self.age_entry.pack()
-        # Sex field
+
+        # Sex field (OptionMenu)
+        genders = ["1", "2"]  # 1=Female, 2=Male
+        self.sex_entry = tk.StringVar(self)
+        self.sex_entry.set(genders[0])
         tk.Label(self, text="Sex* (1=Female, 2=Male):").pack()
-        self.sex_entry = tk.Entry(self)
-        self.sex_entry.pack()
+        self.gender_selection = tk.OptionMenu(self, self.sex_entry, *genders)
+        self.gender_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.gender_selection.pack()
+
         # Job field
-        tk.Label(self, text="Jobs* (1=Temporary, 2=Permanent, 3=Professional):").pack()
+        tk.Label(self, text="Job* (1=Temporary, 2=Permanent, 3=Professional):").pack()
         self.job_entry = tk.Entry(self)
         self.job_entry.pack()
-        # Housing
+
+        # Housing field (OptionMenu)
+        housing_statuses = ["1", "2", "3"]  # 1=Free, 2=Own, 3=Rent
+        self.housing_entry = tk.StringVar(self)
+        self.housing_entry.set(housing_statuses[0])
         tk.Label(self, text="Housing* (1=Free, 2=Own, 3=Rent):").pack()
-        self.housing_entry = tk.Entry(self)
-        self.housing_entry.pack()
-        # Saving accounts
-        tk.Label(self, text="Saving Accounts* (1=Low, 2=Medium, 3=None, 4=Very High):").pack()
-        self.saving_entry = tk.Entry(self)
-        self.saving_entry.pack()
-        # Checking account
-        tk.Label(self, text="Checking Account* (1=Low, 2=Medium, 3=None, 4=Very High):").pack()
-        self.checking_entry = tk.Entry(self)
-        self.checking_entry.pack()
+        self.housing_selection = tk.OptionMenu(self, self.housing_entry, *housing_statuses)
+        self.housing_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.housing_selection.pack()
+
+        # Saving accounts field (OptionMenu)
+        saving_accounts_statuses = ["1", "2", "3", "4"]  # 1=Low, 2=Medium, 3=None, 4=High
+        self.saving_entry = tk.StringVar(self)
+        self.saving_entry.set(saving_accounts_statuses[0])
+        tk.Label(self, text="Saving Accounts* (1=Low, 2=Medium, 3=None, 4=High):").pack()
+        self.saving_selection = tk.OptionMenu(self, self.saving_entry, *saving_accounts_statuses)
+        self.saving_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.saving_selection.pack()
+
+        # Checking account field (OptionMenu)
+        checking_account_statuses = ["1", "2", "3", "4"]  # 1=Low, 2=Medium, 3=None, 4=High
+        self.checking_entry = tk.StringVar(self)
+        self.checking_entry.set(checking_account_statuses[0])
+        tk.Label(self, text="Checking Account* (1=Low, 2=Medium, 3=None, 4=High):").pack()
+        self.checking_selection = tk.OptionMenu(self, self.checking_entry, *checking_account_statuses)
+        self.checking_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.checking_selection.pack()
+
         # Credit amount
         tk.Label(self, text="Credit Amount*:").pack()
         self.credit_entry = tk.Entry(self)
         self.credit_entry.pack()
+
         # Duration
         tk.Label(self, text="Duration* (in months):").pack()
         self.duration_entry = tk.Entry(self)
         self.duration_entry.pack()
-        # Purpose
+
+        # Purpose field (OptionMenu)
+        purposes = ["1", "2", "3", "4", "5"]  # 1=Business, 2=Car, 3=Education, 4=Furniture/Equipment, 5=Radio/TV
+        self.purpose_entry = tk.StringVar(self)
+        self.purpose_entry.set(purposes[0])
         tk.Label(self, text="Purpose* (1=Business, 2=Car, 3=Education, 4=Furniture/Equipment, 5=Radio/TV):").pack()
-        self.purpose_entry = tk.Entry(self)
-        self.purpose_entry.pack()
+        self.purpose_selection = tk.OptionMenu(self, self.purpose_entry, *purposes)
+        self.purpose_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.purpose_selection.pack()
+
         # Credit Score
         tk.Label(self, text="Credit Score*:").pack()
         self.credit_score_entry = tk.Entry(self)
         self.credit_score_entry.pack()
+
         # Income
         tk.Label(self, text="Income*:").pack()
         self.income_entry = tk.Entry(self)
