@@ -13,20 +13,37 @@ from ml_component.decision_tree import train_decision_tree as dt_train_decision_
 # Creating a valid CSV file for testing (ALL01 and ALL02)
 def valid_csv_path(tmp_path):
     data = {
-        # fake data simulating the 'balanced_data.csv' structure
+        # encoded fake data simulating the 'balanced_data.csv' structure
         'Age': [25, 45, 35, 55, 22, 60, 41, 33],
-        'Sex': ['male', 'female', 'male', 'female', 'male', 'female', 'male', 'female'],
-        'Job': ['skilled', 'management', 'unskilled', 'skilled', 'skilled', 'management', 'unskilled', 'skilled'],
-        'Housing': ['own', 'rent', 'own', 'free', 'own', 'rent', 'own', 'free'],
-        'Saving accounts': ['little', 'rich', 'moderate', 'little', 'little', 'rich', 'moderate', 'little'],
-        'Checking account': ['moderate', 'rich', 'little', 'moderate', 'moderate', 'rich', 'little', 'moderate'],
+        'Sex': [2, 1, 2, 1, 2, 1, 2, 1],  # 1 = female, 2 = male
+        'Job': [2, 1, 3, 2, 2, 1, 3, 2],
+        'Housing': [2, 3, 2, 1, 2, 3, 2, 1],  # 1 = free, 2 = own, 3 = rent
+        'Saving accounts': [1, 4, 2, 1, 1, 4, 2, 1],  # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
+        'Checking account': [2, 4, 1, 2, 2, 4, 1, 2],  # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
         'Credit amount': [2500, 5000, 3000, 7500, 1500, 10000, 4500, 2000],
         'Duration': [24, 36, 18, 48, 12, 60, 30, 15],
-        'Purpose': ['radio/TV', 'car', 'furniture', 'business', 'education', 'car', 'repairs', 'radio/TV'],
+        'Purpose': [5, 2, 4, 1, 3, 2, 4, 5],  # 0 = NA, 1 = business, 2 = car, 3 = education, 4 = furniture/equipment, 5 = radio/TV
         'Credit score': [700, 650, 720, 680, 750, 620, 710, 730],
         'Income': [50000, 75000, 45000, 90000, 40000, 120000, 60000, 55000],
-        'Risk': ['Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad']
+        'Risk': [0, 1, 0, 1, 0, 1, 0, 1]  # 0 = Good, 1 = Bad
     }
+
+    # Commenting out the non-encoded data for now
+    # data = {
+    #     # fake data simulating the 'balanced_data.csv' structure
+    #     'Age': [25, 45, 35, 55, 22, 60, 41, 33],
+    #     'Sex': ['male', 'female', 'male', 'female', 'male', 'female', 'male', 'female'],
+    #     'Job': ['skilled', 'management', 'unskilled', 'skilled', 'skilled', 'management', 'unskilled', 'skilled'],
+    #     'Housing': ['own', 'rent', 'own', 'free', 'own', 'rent', 'own', 'free'],
+    #     'Saving accounts': ['little', 'rich', 'moderate', 'little', 'little', 'rich', 'moderate', 'little'],
+    #     'Checking account': ['moderate', 'rich', 'little', 'moderate', 'moderate', 'rich', 'little', 'moderate'],
+    #     'Credit amount': [2500, 5000, 3000, 7500, 1500, 10000, 4500, 2000],
+    #     'Duration': [24, 36, 18, 48, 12, 60, 30, 15],
+    #     'Purpose': ['radio/TV', 'car', 'furniture/equipment', 'business', 'education', 'car', 'furniture/equipment', 'radio/TV'],
+    #     'Credit score': [700, 650, 720, 680, 750, 620, 710, 730],
+    #     'Income': [50000, 75000, 45000, 90000, 40000, 120000, 60000, 55000],
+    #     'Risk': ['Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad']
+    # }
     df = pd.DataFrame(data)
     file_path = tmp_path / "valid_data.csv"
     df.to_csv(file_path, index=False)
@@ -44,17 +61,36 @@ def empty_csv_path(tmp_path):
 def one_class_csv_path(tmp_path):
     """Creates a temporary CSV with only one class in the target variable."""
     data = {
-        'Age': [25, 45, 35, 55], 'Sex': ['male', 'female', 'male', 'female'],
-        'Job': ['skilled', 'management', 'unskilled', 'skilled'],
-        'Housing': ['own', 'rent', 'own', 'free'],
-        'Saving accounts': ['little', 'rich', 'moderate', 'little'],
-        'Checking account': ['moderate', 'rich', 'little', 'moderate'],
-        'Credit amount': [2500, 5000, 3000, 7500], 'Duration': [24, 36, 18, 48],
-        'Purpose': ['radio/TV', 'car', 'furniture', 'business'],
-        'Credit score': [700, 650, 720, 680], 'Income': [50000, 75000, 45000, 90000],
+        'Age': [25, 45, 35, 55],
+        'Sex': [2, 1, 2, 1],  # 1 = female, 2 = male
+        'Job': [2, 1, 3, 2],
+        'Housing': [2, 3, 2, 1],  # 1 = free, 2 = own, 3 = rent
+        'Saving accounts': [1, 4, 2, 1],  # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
+        'Checking account': [2, 4, 1, 2],  # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
+        'Credit amount': [2500, 5000, 3000, 7500],
+        'Duration': [24, 36, 18, 48],
+        'Purpose': [5, 2, 4, 1],  # 0 = NA, 1 = business, 2 = car, 3 = education, 4 = furniture/equipment, 5 = radio/TV
+        'Credit score': [700, 650, 720, 680],
+        'Income': [50000, 75000, 45000, 90000],
         # Risk only has 'Good' values
-        'Risk': ['Good', 'Good', 'Good', 'Good'] 
+        'Risk': [0, 0, 0, 0]  # 0 = Good, 1 = Bad
     }
+    # Commenting out the non-encoded data for now
+    # data = {
+    #     'Age': [25, 45, 35, 55],
+    #     'Sex': ['male', 'female', 'male', 'female'],
+    #     'Job': ['skilled', 'management', 'unskilled', 'skilled'],
+    #     'Housing': ['own', 'rent', 'own', 'free'],
+    #     'Saving accounts': ['little', 'rich', 'moderate', 'little'],
+    #     'Checking account': ['moderate', 'rich', 'little', 'moderate'],
+    #     'Credit amount': [2500, 5000, 3000, 7500],
+    #     'Duration': [24, 36, 18, 48],
+    #     'Purpose': ['radio/TV', 'car', 'furniture/equipment', 'business'],
+    #     'Credit score': [700, 650, 720, 680],
+    #     'Income': [50000, 75000, 45000, 90000],
+    #     # Risk only has 'Good' values
+    #     'Risk': ['Good', 'Good', 'Good', 'Good'] 
+    # }
     df = pd.DataFrame(data)
     file_path = tmp_path / "one_class_data.csv"
     df.to_csv(file_path, index=False)
