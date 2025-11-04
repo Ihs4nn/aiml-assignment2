@@ -43,9 +43,13 @@ class LoanAppGUI(tk.Tk):
         self.gender_selection.pack()
 
         # Job field
+        jobs = ["1", "2", "3"]  # 1=Temporary, 2=Permanent, 3=Professional
+        self.job_entry = tk.StringVar(self)
+        self.job_entry.set("Job")
         tk.Label(self, text="Job* (1=Temporary, 2=Permanent, 3=Professional):").pack()
-        self.job_entry = tk.Entry(self)
-        self.job_entry.pack()
+        self.job_selection = tk.OptionMenu(self, self.job_entry, *jobs)
+        self.job_selection.config(bg="black", fg="white", relief="solid", bd=1, highlightthickness=0, font=("Arial", 11), width=16)
+        self.job_selection.pack()
 
         # Housing field (OptionMenu)
         housing_statuses = ["1", "2", "3"]  # 1=Free, 2=Own, 3=Rent
