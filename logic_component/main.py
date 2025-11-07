@@ -18,8 +18,8 @@ from statistics import mode
 example_customer_data = {
     "Age": 30,
     "Sex": 1, # 1 = female, 2 = male
-    "Job": 1,
-    "Housing": 2, # 1 = free, 2 = own, 3 = rent
+    "Job": 1, # 1 = temporary, 2 = permanent, 3 = professional
+    "Housing": 2, # 0 = NA, 1 = free, 2 = own, 3 = rent
     "Saving accounts": 4, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
     "Checking account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
     "Credit amount": 2000,
@@ -139,7 +139,7 @@ def process(customer_data, ml_risk_scores):
     elif loan_duration > 60:
         return flag("Loan duration exceeds maximum allowed term - review required.")
     elif num_jobs > 3:
-        return flag("Frequent job changes indicates employment instability - review required.")
+        return flag("The job type presents a risk of employment instability - review required.")
     # checking risk level
     elif risk == 1: # bad risk
         return reject("Application rejected due to high risk classification.")
