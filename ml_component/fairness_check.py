@@ -73,3 +73,5 @@ if __name__ == "__main__":
     fairness_rf = group_fairness_check(filtered_y_pred_rf, filtered_sensitive_rf, group_names)
     for group, rate in fairness_rf.items():
         print(f"  {group}: {rate:.2f}")
+
+    
