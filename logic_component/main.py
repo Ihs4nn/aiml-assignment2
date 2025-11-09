@@ -18,8 +18,8 @@ from statistics import mode
 example_customer_data = {
     "Age": 30,
     "Sex": 1, # 1 = female, 2 = male
-    "Job": 1,
-    "Housing": 2, # 1 = free, 2 = own, 3 = rent
+    "Job": 1, # 1 = temporary, 2 = permanent, 3 = professional
+    "Housing": 2, # 0 = NA, 1 = free, 2 = own, 3 = rent
     "Saving accounts": 4, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
     "Checking account": 2, # 0 = NA, 1 = little, 2 = moderate, 3 = none, 4 = rich
     "Credit amount": 2000,
@@ -127,19 +127,19 @@ def process(customer_data, ml_risk_scores):
     # strict rules
     if age < 18:
         return reject("Applicant must be at least 18 years old.")
-    elif credit_amount > 60000:
-        return reject("Requested credit exceeds safe borrowing limit.")
     elif credit_score < 600:
         return reject("Credit score below minimum thresholds.")
     elif income < 20000:
         return reject("Income below minimum thresholds.")
+    elif credit_amount > 60000:
+        return reject("Requested credit exceeds safe borrowing limit.")
     # scenarios that would need reviewing
     elif savings_accounts == 0 and checking_account == 0: # NA amount in both accounts
         return flag("No active bank accounts/balances so financial stability is unclear - review required.")
     elif loan_duration > 60:
         return flag("Loan duration exceeds maximum allowed term - review required.")
     elif num_jobs > 3:
-        return flag("Frequent job changes indicates employment instability - review required.")
+        return flag("The job type presents a risk of employment instability - review required.")
     # checking risk level
     elif risk == 1: # bad risk
         return reject("Application rejected due to high risk classification.")

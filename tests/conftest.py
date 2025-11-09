@@ -128,3 +128,30 @@ def trained_dt_model(valid_csv_path):
         with patch('joblib.dump'):
             dt_model = dt_train_decision_tree(X_train, y_train, cw_dict)
         return dt_model, X_test
+    
+
+@pytest.fixture
+def base_customer():
+    return {
+        "Age": 30,
+        "Sex": 1,
+        "Job": 1,
+        "Housing": 1,
+        "Saving Accounts": 3,
+        "Checking account": 2,
+        "Credit amount": 2000,
+        "Duration": 6,
+        "Purpose": 1,
+        "Credit score": 701,
+        "Income": 50000,
+    }
+
+
+@pytest.fixture
+def good_ml_risk_scores():
+    return [0,0,0]
+
+
+@pytest.fixture
+def bad_ml_risk_scores():
+    return [1,1,1]

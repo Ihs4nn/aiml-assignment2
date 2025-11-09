@@ -2,32 +2,6 @@ import pytest
 from statistics import mode
 from logic_component.main import reject, flag, approve, process
 
-@pytest.fixture
-def base_customer():
-    return {
-        "Age": 30,
-        "Sex": 1,
-        "Job": 1,
-        "Housing": 1,
-        "Saving Accounts": 3,
-        "Checking account": 2,
-        "Credit amount": 2000,
-        "Duration": 6,
-        "Purpose": 1,
-        "Credit score": 701,
-        "Income": 50000,
-    }
-
-
-@pytest.fixture
-def good_ml_risk_scores():
-    return [0,0,0]
-
-
-@pytest.fixture
-def bad_ml_risk_scores():
-    return [1,1,1]
-
 
 class TestReject:
     status = "Rejected"
