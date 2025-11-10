@@ -113,7 +113,7 @@ def process(customer_data, ml_risk_scores):
 
     age = customer_data.get("Age")
     sex = customer_data.get("Sex")
-    num_jobs = customer_data.get("Job")
+    job_type = customer_data.get("Job")
     housing_status = customer_data.get("Housing")
     savings_accounts = customer_data.get("Saving accounts")
     checking_account = customer_data.get("Checking account")
@@ -138,7 +138,7 @@ def process(customer_data, ml_risk_scores):
         return flag("No active bank accounts/balances so financial stability is unclear - review required.")
     elif loan_duration > 60:
         return flag("Loan duration exceeds maximum allowed term - review required.")
-    elif num_jobs > 3:
+    elif job_type > 3:
         return flag("The job type presents a risk of employment instability - review required.")
     # checking risk level
     elif risk == 1: # bad risk
