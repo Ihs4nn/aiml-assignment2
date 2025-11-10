@@ -107,6 +107,25 @@ class LoanAppGUI(tk.Tk):
         self.income_entry = tk.Entry(self)
         self.income_entry.pack()
     
+
+    def is_valid(self, customer_data):
+        if customer_data["Age"] <= 0:
+            messagebox.showerror("Input Error", "Please enter an age greater than 0.")
+            return False
+        if customer_data["Credit amount"] <= 0:
+            messagebox.showerror("Input Error", "Please enter a positive number for the credit amount.")
+            return False
+        if customer_data["Duration"] <= 0:
+            messagebox.showerror("Input Error", "Please enter a positive number for the duration.")
+            return False
+        if customer_data["Credit score"] < 0 or customer_data["Credit score"] > 1000: # valid range is 0-1000
+            messagebox.showerror("Input Error", "Please enter an Equifax credit score between 0 and 1000.")
+            return False
+        if customer_data["Income"] <= 0:
+            messagebox.showerror("Input Error", "Please enter a positive number for the income.")
+            return False
+        return True
+
     # Function to get the data from input fields
     def get_customer_data(self):
         try:
@@ -123,7 +142,7 @@ class LoanAppGUI(tk.Tk):
                 "Credit score": float(self.credit_score_entry.get()),
                 "Income": float(self.income_entry.get())
             }
-            return customer_data
+            return customer_data if self.is_valid(customer_data) else None
         except ValueError:
             messagebox.showerror("Input Error", "Please enter valid data in all fields for submission")
             return None
